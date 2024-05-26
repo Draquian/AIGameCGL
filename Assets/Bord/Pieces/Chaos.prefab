@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7515930803921920252}
   - component: {fileID: 9202433792714639872}
   - component: {fileID: -1328001615737880380}
+  - component: {fileID: 3551411008830227326}
   m_Layer: 6
   m_Name: Chaos
   m_TagString: Piece
@@ -129,3 +130,20 @@ MonoBehaviour:
   - {fileID: 8066521791735040468, guid: 89869edbfb53e3245930bcc49f5d1698, type: 3}
   legendCards:
   - {fileID: 8066521791735040468, guid: 7206449ff62d2694f9f91fbaef4fdbed, type: 3}
+  panelChaosCard: {fileID: 0}
+--- !u!54 &3551411008830227326
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 421858761339006837}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0

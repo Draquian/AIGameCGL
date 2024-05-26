@@ -70,7 +70,7 @@ public class ChaosManager : MonoBehaviour
 
         if (raretyCard <= isCommon)
         {
-            //"Teleportation", "Swap Positions", "Freeze", "Vortex", "Time Anchor"
+            //"Teleportation", "Swap Positions", "Freeze", "Tornado", "Time Anchor"
             randomCard = commonCards[Random.Range(0, commonCards.Length)];
         }
         else if (raretyCard <= isRare)
@@ -161,8 +161,8 @@ public class ChaosManager : MonoBehaviour
             case "Freeze":
                 frCard = true;
                 break;
-            case "Vortex":
-                Debug.Log(card);
+            case "Tornado":
+                Tornado();
                 break;
             case "Time Anchor":
                 Debug.Log(card);
@@ -270,5 +270,19 @@ public class ChaosManager : MonoBehaviour
                 frCard = false;
             }
         }
+    }
+
+    void Tornado()
+    {
+        GameObject tornado = new GameObject("A Big Tornado");
+
+        int posX = Random.Range(1, 8);
+        int posZ = Random.Range(1, 8);
+        tornado.transform.position = new Vector3(posX, 1, posZ);
+
+        tornado.AddComponent<BoxCollider>();
+        tornado.GetComponent<BoxCollider>().isTrigger = true;
+
+        tornado.AddComponent<TornadoManager>();
     }
 }
