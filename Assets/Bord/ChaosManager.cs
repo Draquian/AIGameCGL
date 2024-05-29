@@ -25,6 +25,9 @@ public class ChaosManager : MonoBehaviour
     bool tpCard = false;
     bool spCard = false;
     bool frCard = false;
+    bool trCard = false;
+    bool saCard = false;
+    bool prCard = false;
 
     void Start()
     {
@@ -38,6 +41,9 @@ public class ChaosManager : MonoBehaviour
         if (tpCard) TPCard();
         if (spCard) SwapPos();
         if (frCard) Freeze();
+        if (trCard) GenerateTrap();
+        if (saCard) SacrificeAbility();
+        if (prCard) Promotion();
     }
 
     public void IncrementRound()
@@ -75,7 +81,7 @@ public class ChaosManager : MonoBehaviour
         }
         else if (raretyCard <= isRare)
         {
-            //"Invisibility", "Trap", "Sacrifice", "Revenge" 
+            //"Reveal", "Trap", "Sacrifice", "Revenge" 
             randomCard = rareCards[Random.Range(0, rareCards.Length)];
         }
         else if (raretyCard <= isEpic)
@@ -93,7 +99,9 @@ public class ChaosManager : MonoBehaviour
 
         GameObject button = Instantiate(randomCard);
 
-        button.transform.SetParent(panelChaosCard.transform, false);
+        GameObject parentCards = GameObject.Find("CardsTable");
+
+        button.transform.SetParent(parentCards.transform, false);
 
         button.GetComponent<Button>().onClick.AddListener(delegate { SelectedCard(button); });
 
@@ -167,17 +175,17 @@ public class ChaosManager : MonoBehaviour
             case "Time Anchor":
                 Debug.Log(card);
                 break;
-            case "Invisibility":
-                Debug.Log(card);
+            case "Reveal":
+                RevealTrap();
                 break;
             case "Trap":
-                Debug.Log(card);
+                trCard = true;
                 break;
             case "Sacrifice":
-                Debug.Log(card);
+                saCard = true;
                 break;
             case "Revenge":
-                Debug.Log(card);
+                Debug.Log(card); //Add a script to the piece
                 break;
             case "Banish":
                 Debug.Log(card);
@@ -186,7 +194,7 @@ public class ChaosManager : MonoBehaviour
                 Debug.Log(card);
                 break;
             case "Promote":
-                Debug.Log(card);
+                prCard = true;
                 break;
             case "Summon":
                 Debug.Log(card);
@@ -284,5 +292,173 @@ public class ChaosManager : MonoBehaviour
         tornado.GetComponent<BoxCollider>().isTrigger = true;
 
         tornado.AddComponent<TornadoManager>();
+    }
+    
+    void GenerateTrap()
+    {
+        ChessGameManager CGM = FindObjectOfType<ChessGameManager>();
+
+        if (CGM.resetGame == false && CGM.canPromote == false && Input.GetMouseButtonUp(1))
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            // Raycast to detect piece
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, CGM.pieceLayer))
+            {
+                GameObject hitPiece = hit.transform.gameObject;
+
+                if (CGM.CanSelectPiece(hitPiece))
+                {
+                    GameObject trap = new GameObject("Its a trap");
+
+                    float posX = hitPiece.transform.position.x;
+                    float posZ = hitPiece.transform.position.z;
+
+                    trap.transform.position = new Vector3(posX, 1, posZ);
+
+                    trap.AddComponent<BoxCollider>();
+                    trap.GetComponent<BoxCollider>().isTrigger = true;
+
+                    trap.AddComponent<Trap>();
+
+                    CGM.IncrementTurn();
+                    trCard = false;
+                }
+            }
+        }
+    }
+
+    void RevealTrap()
+    {
+        Trap[] trapTile = FindObjectsOfType<Trap>();
+
+        if (trapTile == null) return;
+
+        StartCoroutine(RevealTrap(trapTile));
+    }
+
+    IEnumerator RevealTrap(Trap[] trapTile)
+    {
+        ChessGameManager CGM = FindObjectOfType<ChessGameManager>();
+
+        List<GameObject> traps = new List<GameObject>();
+        List<Color> trapsColor = new List<Color>();
+
+        foreach (Trap tT in trapTile)
+        {
+            Collider[] colliders = Physics.OverlapSphere(tT.GetPos(), 0.5f, CGM.tileLayer);
+            foreach (Collider collider in colliders)
+            {
+                if (collider.CompareTag("Tile"))
+                {
+                    traps.Add(collider.gameObject);
+                    trapsColor.Add(collider.GetComponent<MeshRenderer>().material.color);
+                    collider.GetComponent<MeshRenderer>().material.color = Color.green;
+                }
+            }
+            yield return new WaitForSeconds(0.25f);
+        }
+
+        //yield return new WaitForSeconds(0.5f);
+
+        for (int i = 0; i < traps.Count; i++)
+        {
+            traps[i].GetComponent<MeshRenderer>().material.color = trapsColor[i];
+
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    void SacrificeAbility()
+    {
+        //Sacrifice 1 piece to maybe kiil on similar random enemy piece
+
+        ChessGameManager CGM = FindObjectOfType<ChessGameManager>();
+
+        if (CGM.resetGame == false && CGM.canPromote == false && Input.GetMouseButtonUp(1))
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            // Raycast to detect piece
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, CGM.pieceLayer))
+            {
+                GameObject hitPiece = hit.transform.gameObject;
+
+                if (CGM.CanSelectPiece(hitPiece) && hitPiece.name != "King(Clone)")
+                {
+                    GameObject enemyPieces = CGM.isWhiteTurn == true ? GameObject.Find("Black") : GameObject.Find("White");
+
+                    List<GameObject> canDie = new List<GameObject>();
+
+                    foreach (Transform child in enemyPieces.transform)
+                    {
+                        if (child.name == hitPiece.name) canDie.Add(child.gameObject);
+                    }
+
+                    int ranTarget = Random.Range(0, canDie.Count);
+
+                    Color originalColor = canDie[ranTarget].GetComponent<MeshRenderer>().material.color;
+
+                    canDie[ranTarget].GetComponent<MeshRenderer>().material.color = Color.red;
+
+                    StartCoroutine(Sacrifacing(canDie[ranTarget], originalColor));
+
+                    Destroy(hitPiece);
+
+                    saCard = false;
+                }
+            }
+        }
+    }
+
+    IEnumerator Sacrifacing(GameObject target, Color colorOG)
+    {
+        ChessGameManager CGM = FindObjectOfType<ChessGameManager>();
+        yield return new WaitForSeconds(1f);
+
+        int ranNum = Random.Range(0, 4);
+
+        if (ranNum == 0)
+        {
+            target.GetComponent<MeshRenderer>().material.color = colorOG;
+            Destroy(target);
+        }
+        else
+        {
+            target.GetComponent<MeshRenderer>().material.color = colorOG;
+        }
+
+        CGM.IncrementTurn();
+    }
+
+    void Promotion()
+    {
+        ChessGameManager CGM = FindObjectOfType<ChessGameManager>();
+
+        if (CGM.resetGame == false && CGM.canPromote == false && Input.GetMouseButtonUp(1))
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            // Raycast to detect piece
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, CGM.pieceLayer))
+            {
+                GameObject hitPiece = hit.transform.gameObject;
+
+                if (CGM.CanSelectPiece(hitPiece))
+                {
+                    CGM.pawnToPromote = hitPiece;
+
+                    CGM.canPromote = true;
+                    CGM.panelToPromote.SetActive(true);
+
+                    CGM.IncrementTurn();
+
+                    prCard = false;
+                }
+            }
+        }
     }
 }

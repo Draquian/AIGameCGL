@@ -6,7 +6,6 @@ using UnityEngine;
 public class FreezePiece : MonoBehaviour
 {
     Color colorOG;
-
     int turn = 0;
 
     // Start is called before the first frame update

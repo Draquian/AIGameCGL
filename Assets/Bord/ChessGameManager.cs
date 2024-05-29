@@ -7,6 +7,7 @@ using TMPro;
 /*
  TODO: 
         -Cards Chaos Logic
+        -Delete Trap at the resetGame
         -Make the art
         -Add AI to cast the game as an Epic War
 
@@ -25,14 +26,14 @@ public class ChessGameManager : MonoBehaviour
 
     private Color colorPieceSelected;
 
-    private List<PriestManager.CapturedPieceInfo> capturedPiecesWhite = new List<PriestManager.CapturedPieceInfo>();
-    private List<PriestManager.CapturedPieceInfo> capturedPiecesBlack = new List<PriestManager.CapturedPieceInfo>();
+    public List<PriestManager.CapturedPieceInfo> capturedPiecesWhite = new List<PriestManager.CapturedPieceInfo>();
+    public List<PriestManager.CapturedPieceInfo> capturedPiecesBlack = new List<PriestManager.CapturedPieceInfo>();
 
     public bool resetGame = false;
 
     public bool canPromote = false;
     public GameObject panelToPromote;
-    private GameObject pawnToPromote;
+    public GameObject pawnToPromote;
 
     public GameObject losePanel;
     float alphaPanel;
@@ -93,7 +94,17 @@ public class ChessGameManager : MonoBehaviour
         {
             BoardChessGeneration BCG = FindObjectOfType<BoardChessGeneration>();
             BCG.ResetGame();
+            losePanel.SetActive(false);
+
+            GameObject deck = GameObject.Find("CardsTable");
+
+            foreach (Transform child in deck.transform)
+            {
+                Destroy(child.gameObject);
+            }
+
             isWhiteTurn = true;
+            resetGame = false;
         }
 
         if (resetGame && Input.anyKey)
@@ -101,6 +112,14 @@ public class ChessGameManager : MonoBehaviour
             BoardChessGeneration BCG = FindObjectOfType<BoardChessGeneration>();
             BCG.ResetGame();
             losePanel.SetActive(false);
+
+            GameObject deck = GameObject.Find("CardsTable");
+
+            foreach (Transform child in deck.transform)
+            {
+                Destroy(child.gameObject);
+            }
+
             isWhiteTurn = true;
             resetGame = false;
         }
@@ -273,7 +292,7 @@ public class ChessGameManager : MonoBehaviour
         winSide.color = txtC;
     }
 
-    GameObject GetPieceAtTile(GameObject tile)
+    public GameObject GetPieceAtTile(GameObject tile)
     {
         Collider[] colliders = Physics.OverlapSphere(tile.transform.position, 0.5f, pieceLayer);
         foreach (Collider collider in colliders)
