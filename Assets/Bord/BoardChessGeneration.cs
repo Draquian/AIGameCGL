@@ -9,7 +9,6 @@ public class BoardChessGeneration : MonoBehaviour
     //"Teleportation Gate" is 2.
     //"Charged Tile" is 3.
     //"Time Dilation Tile" is 4.
-    { 1, 0, 1, 0, 3, 0, 1, 0 },
     /*{ 2, 1, 0, 3, 0, 1, 0, 2, 0, 1 },
       { 1, 0, 1, 0, 3, 0, 1, 0, 1, 0 },
       { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 },
