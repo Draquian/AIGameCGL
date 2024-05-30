@@ -23,6 +23,7 @@ public class Trap : MonoBehaviour
                     CGM.capturedPiecesBlack.Add(new PriestManager.CapturedPieceInfo(pieceAtTile, transform.position, 0));
 
                 pieceAtTile.SetActive(false); //dont destroy, they can revive
+                Destroy(this.gameObject);
             }
         }
     }

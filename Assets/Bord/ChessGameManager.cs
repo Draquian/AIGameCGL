@@ -6,8 +6,6 @@ using TMPro;
 
 /*
  TODO: 
-        -Cards Chaos Logic
-        -Delete Trap at the resetGame
         -Make the art
         -Add AI to cast the game as an Epic War
 
@@ -20,6 +18,7 @@ public class ChessGameManager : MonoBehaviour
 {
     public LayerMask pieceLayer;
     public LayerMask tileLayer;
+    public LayerMask trapLayer;
 
     public GameObject selectedPiece;
     public bool isWhiteTurn = true; // White starts first
@@ -103,6 +102,8 @@ public class ChessGameManager : MonoBehaviour
                 Destroy(child.gameObject);
             }
 
+            Destroy(GameObject.Find("All_Traps"));
+
             isWhiteTurn = true;
             resetGame = false;
         }
@@ -119,6 +120,8 @@ public class ChessGameManager : MonoBehaviour
             {
                 Destroy(child.gameObject);
             }
+
+            Destroy(GameObject.Find("All_Traps"));
 
             isWhiteTurn = true;
             resetGame = false;
@@ -139,7 +142,7 @@ public class ChessGameManager : MonoBehaviour
         if (piece.CompareTag("Piece") && piece.GetComponent<FreezePiece>() == null)
         {
             Color pieceColor = piece.GetComponent<MeshRenderer>().material.color;
-            if ((isWhiteTurn && pieceColor == Color.white) || (!isWhiteTurn && pieceColor == Color.black))
+            if ((isWhiteTurn && pieceColor.r >= 0.5f) || (!isWhiteTurn && pieceColor.r <= 0.49f))
             {
                 return true;
             }
@@ -252,6 +255,8 @@ public class ChessGameManager : MonoBehaviour
                         capturedPiecesBlack.Add(new PriestManager.CapturedPieceInfo(pieceAtTile, tile.transform.position, 0));
 
                     pieceAtTile.SetActive(false); //dont destroy, they can revive
+
+                    if (pieceAtTile.GetComponent<Revenge>() != null) pieceAtTile.GetComponent<Revenge>().TakeRevenge(selectedPiece);
                 }
             }
             else

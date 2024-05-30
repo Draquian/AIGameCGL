@@ -118,18 +118,21 @@ MonoBehaviour:
   - {fileID: 8066521791735040468, guid: 83527b8bacd16564fb6d6f0c791a1eff, type: 3}
   - {fileID: 8066521791735040468, guid: e2a1c42059d6aa6459d2235bd7ed8aa4, type: 3}
   - {fileID: 8066521791735040468, guid: 31255c805b81c9f4d817fb5c555e8703, type: 3}
-  - {fileID: 8066521791735040468, guid: 88f28a09d397fdb4488355ed5abf30b4, type: 3}
   rareCards:
-  - {fileID: 8066521791735040468, guid: 5823a7c63c9d2f44998d11bd3812bb52, type: 3}
+  - {fileID: 8066521791735040468, guid: 88f28a09d397fdb4488355ed5abf30b4, type: 3}
   - {fileID: 8066521791735040468, guid: 10a4d86baf020384086f20bc60d8cf6a, type: 3}
   - {fileID: 8066521791735040468, guid: 7504fd53bc526e7489903c4cdb6cfd56, type: 3}
   - {fileID: 8066521791735040468, guid: 1e2f9296c009c494d8349c2ec7777466, type: 3}
   epicCards:
   - {fileID: 8066521791735040468, guid: ac2b42d93331e294eacc4595f65c5f95, type: 3}
   - {fileID: 8066521791735040468, guid: 0b325a0b8baa06b45ad4e53e8c51cc58, type: 3}
-  - {fileID: 8066521791735040468, guid: 89869edbfb53e3245930bcc49f5d1698, type: 3}
+  - {fileID: 8066521791735040468, guid: 5823a7c63c9d2f44998d11bd3812bb52, type: 3}
   legendCards:
   - {fileID: 8066521791735040468, guid: 7206449ff62d2694f9f91fbaef4fdbed, type: 3}
+  pawnPrefab:
+  - {fileID: 8190962409654527115, guid: 8c5df94a1fcaf524d8128f6389d740be, type: 3}
+  - {fileID: 8190962409654527115, guid: 8c5df94a1fcaf524d8128f6389d740be, type: 3}
+  - {fileID: 421858761339006837, guid: 9f243898ec6f1e94eb4a9e8653a615d1, type: 3}
   panelChaosCard: {fileID: 0}
 --- !u!54 &3551411008830227326
 Rigidbody:
