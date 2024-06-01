@@ -22,6 +22,7 @@ public class ChessGameManager : MonoBehaviour
 
     public GameObject selectedPiece;
     public bool isWhiteTurn = true; // White starts first
+    public bool endTurn = false;
 
     private Color colorPieceSelected;
 
@@ -43,6 +44,9 @@ public class ChessGameManager : MonoBehaviour
     public TextMeshProUGUI normalText1;
     public TextMeshProUGUI normalText3;
 
+    public GameObject whiteCamera;
+    public GameObject blackCamera;
+    public GameObject light;
 
     void Update()
     {
@@ -56,6 +60,9 @@ public class ChessGameManager : MonoBehaviour
             {
                 // Select the piece
                 GameObject hitPiece = hit.transform.gameObject;
+                Vector3 temporalPos = hit.transform.position;
+                temporalPos.y = 3;
+                light.transform.position = temporalPos;
                 if (CanSelectPiece(hitPiece))
                 {
                     SelectPiece(hitPiece);
@@ -63,7 +70,7 @@ public class ChessGameManager : MonoBehaviour
             }
         }
 
-        if(!resetGame && !canPromote && Input.GetMouseButtonUp(0))
+        if(!resetGame && !endTurn && !canPromote && Input.GetMouseButtonUp(0))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -73,6 +80,9 @@ public class ChessGameManager : MonoBehaviour
             {
                 // Move the selected piece
                 MovePiece(hit.transform.gameObject);
+                Vector3 temporalPos = hit.transform.position;
+                temporalPos.y = 3;
+                light.transform.position = temporalPos;
             }
         }
         
@@ -267,7 +277,7 @@ public class ChessGameManager : MonoBehaviour
         }
 
         // Move the piece to the destination tile
-        selectedPiece.transform.position = new Vector3(tile.transform.position.x, 0.5f, tile.transform.position.z);
+        selectedPiece.transform.position = new Vector3(tile.transform.position.x, 1f, tile.transform.position.z);
 
         IncrementTurn();
     }
@@ -720,31 +730,8 @@ public class ChessGameManager : MonoBehaviour
             selectedPiece = null;
         }
 
-        // Switch turn to the other player
-        isWhiteTurn = !isWhiteTurn;
-
-        foreach (PriestManager.CapturedPieceInfo capturedPieceInfo in capturedPiecesWhite)
-        {
-            capturedPieceInfo.turnsSinceCapture++;
-        } 
-        
-        foreach (PriestManager.CapturedPieceInfo capturedPieceInfo in capturedPiecesBlack)
-        {
-            capturedPieceInfo.turnsSinceCapture++;
-        }
-
-        ChaosManager[] chaosPieces = FindObjectsOfType<ChaosManager>();
-        foreach (ChaosManager chaos in chaosPieces)
-        {
-            chaos.SetInteraction(isWhiteTurn);
-            chaos.IncrementRound();
-        }
-
-        FreezePiece[] freezedPieces = FindObjectsOfType<FreezePiece>();
-        foreach (FreezePiece fP in freezedPieces)
-        {
-            fP.IncrementTurn();
-        }
+        endTurn = true;
+        StartCoroutine(EndTurn());
     }
 
     GameObject AdjacentToDeath(GameObject startTile)
@@ -799,5 +786,40 @@ public class ChessGameManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    IEnumerator EndTurn()
+    {
+        yield return new WaitForSeconds(0.25f);
+
+        // Switch turn to the other player
+        isWhiteTurn = !isWhiteTurn;
+        whiteCamera.SetActive(isWhiteTurn);
+        blackCamera.SetActive(!isWhiteTurn);
+
+        foreach (PriestManager.CapturedPieceInfo capturedPieceInfo in capturedPiecesWhite)
+        {
+            capturedPieceInfo.turnsSinceCapture++;
+        }
+
+        foreach (PriestManager.CapturedPieceInfo capturedPieceInfo in capturedPiecesBlack)
+        {
+            capturedPieceInfo.turnsSinceCapture++;
+        }
+
+        ChaosManager[] chaosPieces = FindObjectsOfType<ChaosManager>();
+        foreach (ChaosManager chaos in chaosPieces)
+        {
+            chaos.SetInteraction(isWhiteTurn);
+            chaos.IncrementRound();
+        }
+
+        FreezePiece[] freezedPieces = FindObjectsOfType<FreezePiece>();
+        foreach (FreezePiece fP in freezedPieces)
+        {
+            fP.IncrementTurn();
+        }
+
+        endTurn = false;
     }
 }

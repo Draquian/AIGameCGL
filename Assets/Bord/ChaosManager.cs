@@ -89,12 +89,12 @@ public class ChaosManager : MonoBehaviour
         }
         else if (raretyCard <= isRare)
         {
-            //"Reveal", "Trap", "Sacrifice", "Revenge" 
+            //"Trap Detector", "Trap", "Sacrifice", "Revenge" 
             randomCard = rareCards[Random.Range(0, rareCards.Length)];
         }
         else if (raretyCard <= isEpic)
         {
-            //"Banish", "Promote", "Void Rift"
+            //"Banish", "Promote", "Reveal"
             randomCard = epicCards[Random.Range(0, epicCards.Length)];
         }
         else if (raretyCard <= isLegend)
@@ -225,7 +225,7 @@ public class ChaosManager : MonoBehaviour
     {
         ChessGameManager CGM = FindObjectOfType<ChessGameManager>();
 
-        if (CGM.resetGame == false && CGM.canPromote == false && Input.GetMouseButtonUp(1))
+        if (CGM.resetGame == false && CGM.canPromote == false && CGM.endTurn == false && Input.GetMouseButtonUp(1))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -245,7 +245,7 @@ public class ChaosManager : MonoBehaviour
     {
         ChessGameManager CGM = FindObjectOfType<ChessGameManager>();
 
-        if (CGM.resetGame == false && CGM.canPromote == false && Input.GetMouseButtonUp(1))
+        if (CGM.resetGame == false && CGM.canPromote == false && CGM.endTurn == false && Input.GetMouseButtonUp(1))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -273,7 +273,7 @@ public class ChaosManager : MonoBehaviour
     { 
         ChessGameManager CGM = FindObjectOfType<ChessGameManager>();
 
-        if (CGM.resetGame == false && CGM.canPromote == false && Input.GetMouseButtonUp(1))
+        if (CGM.resetGame == false && CGM.canPromote == false && CGM.endTurn == false && Input.GetMouseButtonUp(1))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -306,7 +306,7 @@ public class ChaosManager : MonoBehaviour
     {
         ChessGameManager CGM = FindObjectOfType<ChessGameManager>();
 
-        if (CGM.resetGame == false && CGM.canPromote == false && Input.GetMouseButtonUp(1))
+        if (CGM.resetGame == false && CGM.canPromote == false && CGM.endTurn == false && Input.GetMouseButtonUp(1))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -401,7 +401,7 @@ public class ChaosManager : MonoBehaviour
 
         ChessGameManager CGM = FindObjectOfType<ChessGameManager>();
 
-        if (CGM.resetGame == false && CGM.canPromote == false && Input.GetMouseButtonUp(1))
+        if (CGM.resetGame == false && CGM.canPromote == false && CGM.endTurn == false && Input.GetMouseButtonUp(1))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -462,7 +462,7 @@ public class ChaosManager : MonoBehaviour
     {
         ChessGameManager CGM = FindObjectOfType<ChessGameManager>();
 
-        if (CGM.resetGame == false && CGM.canPromote == false && Input.GetMouseButtonUp(1))
+        if (CGM.resetGame == false && CGM.canPromote == false && CGM.endTurn == false && Input.GetMouseButtonUp(1))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -491,7 +491,7 @@ public class ChaosManager : MonoBehaviour
     {
         ChessGameManager CGM = FindObjectOfType<ChessGameManager>();
 
-        if (CGM.resetGame == false && CGM.canPromote == false && Input.GetMouseButtonUp(1))
+        if (CGM.resetGame == false && CGM.canPromote == false && CGM.endTurn == false && Input.GetMouseButtonUp(1))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -514,7 +514,7 @@ public class ChaosManager : MonoBehaviour
     {
         ChessGameManager CGM = FindObjectOfType<ChessGameManager>();
 
-        if (CGM.resetGame == false && CGM.canPromote == false && Input.GetMouseButtonUp(1))
+        if (CGM.resetGame == false && CGM.canPromote == false && CGM.endTurn == false && Input.GetMouseButtonUp(1))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -632,7 +632,7 @@ public class ChaosManager : MonoBehaviour
 
         ChessGameManager CGM = FindObjectOfType<ChessGameManager>();
 
-        if (CGM.resetGame == false && CGM.canPromote == false && Input.GetMouseButtonUp(1))
+        if (CGM.resetGame == false && CGM.canPromote == false && CGM.endTurn == false && Input.GetMouseButtonUp(1))
         {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

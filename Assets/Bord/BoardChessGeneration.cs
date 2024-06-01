@@ -115,7 +115,7 @@ public class BoardChessGeneration : MonoBehaviour
         GameObject pawn = Instantiate(pawnPrefab, transform);
 
         // Calculate position for pawn
-        Vector3 pawnPosition = new Vector3(col * tileSize, 0.5f, row * tileSize) + offset;
+        Vector3 pawnPosition = new Vector3(col * tileSize, 0.9f, row * tileSize) + offset;
         pawn.transform.position = pawnPosition;
 
         // Set color of pawn
@@ -146,7 +146,7 @@ public class BoardChessGeneration : MonoBehaviour
         GameObject piece = Instantiate(piecePrefab, transform);
 
         // Calculate the position of the piece
-        Vector3 piecePosition = new Vector3(col * tileSize, 0.5f, row * tileSize) + offset;
+        Vector3 piecePosition = new Vector3(col * tileSize, 0.9f, row * tileSize) + offset;
         piece.transform.position = piecePosition;
 
         // Set color of the piece
