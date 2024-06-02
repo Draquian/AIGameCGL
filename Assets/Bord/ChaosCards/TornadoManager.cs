@@ -18,7 +18,7 @@ public class TornadoManager : MonoBehaviour
     {
         if (collision.CompareTag("Piece"))
         {
-            Vector3 newPos = new Vector3(Random.Range(0, 9), 0.5f, Random.Range(0, 9));
+            Vector3 newPos = new Vector3(Random.Range(0, 9), collision.transform.position.y, Random.Range(0, 9));
 
             while (IsPieceAtTile(newPos))
             {
@@ -47,7 +47,7 @@ public class TornadoManager : MonoBehaviour
     {
         ChessGameManager CGM = FindObjectOfType<ChessGameManager>();
 
-        Collider[] colliders = Physics.OverlapSphere(pos, 0.5f, CGM.pieceLayer);
+        Collider[] colliders = Physics.OverlapSphere(pos, 0.75f, CGM.pieceLayer);
         foreach (Collider collider in colliders)
         {
             if (collider.CompareTag("Piece"))

@@ -115,8 +115,23 @@ public class BoardChessGeneration : MonoBehaviour
         GameObject pawn = Instantiate(pawnPrefab, transform);
 
         // Calculate position for pawn
-        Vector3 pawnPosition = new Vector3(col * tileSize, 0.9f, row * tileSize) + offset;
+        Vector3 pawnPosition;
+        if (pawnPrefab.name == "Pawn") { pawnPosition = new Vector3(col * tileSize, 0.9f, row * tileSize) + offset;}
+        else if (pawnPrefab.name == "Assassin") { pawnPosition = new Vector3((col * tileSize) - 0.17f, 1.1f, row * tileSize) + offset;}
+        else { pawnPosition = new Vector3(col * tileSize, 0.9f, row * tileSize) + offset;}
         pawn.transform.position = pawnPosition;
+
+        // Set Rotaton of the piece
+        Vector3 pieceRotation;
+        if (pawnPrefab.name == "SoulEater") { pieceRotation = new Vector3(0, -90, 0); }
+        else { pieceRotation = new Vector3(0, 0, 0); }
+        pawn.transform.rotation = Quaternion.Euler(pieceRotation);
+
+        if (row == 8)
+        {
+            if (pawnPrefab.name == "SoulEater") { pieceRotation = new Vector3(0, 90, 0); }
+            pawn.transform.rotation = Quaternion.Euler(pieceRotation);
+        }
 
         // Set color of pawn
         MeshRenderer renderer = pawn.GetComponent<MeshRenderer>();
@@ -146,8 +161,26 @@ public class BoardChessGeneration : MonoBehaviour
         GameObject piece = Instantiate(piecePrefab, transform);
 
         // Calculate the position of the piece
-        Vector3 piecePosition = new Vector3(col * tileSize, 0.9f, row * tileSize) + offset;
+        Vector3 piecePosition;
+        if (piecePrefab.name == "Priest") { piecePosition = new Vector3(col * tileSize, 0.95f, (row * tileSize) + 0.5f) + offset; }
+        else if (piecePrefab.name == "Queen") { piecePosition = new Vector3(col * tileSize, 1.07f, row * tileSize) + offset; }
+        else if (piecePrefab.name == "Chaos") { piecePosition = new Vector3(col * tileSize, 0.9f, row * tileSize) + offset; }
+        else if (piecePrefab.name == "King") { piecePosition = new Vector3((col * tileSize) + 0.35f, 1f, row * tileSize) + offset; }
+        else { piecePosition = new Vector3(col * tileSize, 0.95f, row * tileSize) + offset; }
         piece.transform.position = piecePosition;
+
+        // Set Rotaton of the piece
+        Vector3 pieceRotation;
+        if (piecePrefab.name == "Knight") { pieceRotation = new Vector3(0, -90, 0); }
+        else { pieceRotation = new Vector3(0, 0, 0); }
+        piece.transform.rotation = Quaternion.Euler(pieceRotation);
+
+        if (row == 9) 
+        { 
+            if (piecePrefab.name == "Knight") { pieceRotation = new Vector3(0, 90, 0); }
+            else if (piecePrefab.name == "Chaos") { pieceRotation = new Vector3(0, 180, 0); }
+            piece.transform.rotation = Quaternion.Euler(pieceRotation);
+        }
 
         // Set color of the piece
         MeshRenderer renderer = piece.GetComponent<MeshRenderer>();

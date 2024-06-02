@@ -372,7 +372,7 @@ public class ChaosManager : MonoBehaviour
 
         foreach (Trap tT in trapTile)
         {
-            Collider[] colliders = Physics.OverlapSphere(tT.GetPos(), 0.5f, CGM.tileLayer);
+            Collider[] colliders = Physics.OverlapSphere(tT.GetPos(), 0.75f, CGM.tileLayer);
             foreach (Collider collider in colliders)
             {
                 if (collider.CompareTag("Tile"))
@@ -613,7 +613,7 @@ public class ChaosManager : MonoBehaviour
     {
         ChessGameManager CGM = FindObjectOfType<ChessGameManager>();
 
-        Collider[] colliders = Physics.OverlapSphere(pos, 0.5f, CGM.pieceLayer);
+        Collider[] colliders = Physics.OverlapSphere(pos, 0.75f, CGM.pieceLayer);
         foreach (Collider collider in colliders)
         {
             if (collider.CompareTag("Piece"))
@@ -664,7 +664,7 @@ public class ChaosManager : MonoBehaviour
 
         Debug.Log(pos);
 
-        Collider[] colliders = Physics.OverlapSphere(pos, 0.5f, CGM.trapLayer);
+        Collider[] colliders = Physics.OverlapSphere(pos, 0.75f, CGM.trapLayer);
         foreach (Collider collider in colliders)
         {
             Debug.Log("Casi Gotcha");
@@ -686,7 +686,7 @@ public class ChaosManager : MonoBehaviour
 
         foreach (Trap tT in trapTile)
         {
-            Collider[] colliders = Physics.OverlapSphere(tT.GetPos(), 0.5f, CGM.tileLayer);
+            Collider[] colliders = Physics.OverlapSphere(tT.GetPos(), 0.75f, CGM.tileLayer);
             foreach (Collider collider in colliders)
             {
                 if (collider.CompareTag("Tile"))

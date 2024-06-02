@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 
 /*
- TODO: 
+ TODO:
         -Make the art
         -Add AI to cast the game as an Epic War
 
@@ -277,7 +277,41 @@ public class ChessGameManager : MonoBehaviour
         }
 
         // Move the piece to the destination tile
-        selectedPiece.transform.position = new Vector3(tile.transform.position.x, 1f, tile.transform.position.z);
+        switch (selectedPiece.name)
+        {
+            case "Pawn(Clone)":
+                selectedPiece.transform.position = new Vector3(tile.transform.position.x, 0.9f, tile.transform.position.z);
+                break;
+            case "Tower(Clone)":
+                selectedPiece.transform.position = new Vector3(tile.transform.position.x, 0.95f, tile.transform.position.z);
+                break;
+            case "Bishop(Clone)":
+                selectedPiece.transform.position = new Vector3(tile.transform.position.x, 0.95f, tile.transform.position.z);
+                break;
+            case "Queen(Clone)":
+                selectedPiece.transform.position = new Vector3(tile.transform.position.x, 1.07f, tile.transform.position.z);
+                break;
+            case "King(Clone)":
+                selectedPiece.transform.position = new Vector3(tile.transform.position.x + 0.35f, 1f, tile.transform.position.z);
+                break;
+            case "Knight(Clone)":
+                selectedPiece.transform.position = new Vector3(tile.transform.position.x, 0.95f, tile.transform.position.z);
+                break;
+            case "SoulEater(Clone)":
+                selectedPiece.transform.position = new Vector3(tile.transform.position.x, 1f, tile.transform.position.z);
+                break;
+            case "Assassin(Clone)":
+                selectedPiece.transform.position = new Vector3(tile.transform.position.x -0.17f, 1.1f, tile.transform.position.z);
+                break;
+            case "Priest(Clone)":
+                selectedPiece.transform.position = new Vector3(tile.transform.position.x, 0.95f, tile.transform.position.z + 0.5f);
+                break;
+            case "Chaos(Clone)":
+                selectedPiece.transform.position = new Vector3(tile.transform.position.x, 0.9f, tile.transform.position.z);
+                break;
+            default:
+                return;
+        }
 
         IncrementTurn();
     }
@@ -309,7 +343,7 @@ public class ChessGameManager : MonoBehaviour
 
     public GameObject GetPieceAtTile(GameObject tile)
     {
-        Collider[] colliders = Physics.OverlapSphere(tile.transform.position, 0.5f, pieceLayer);
+        Collider[] colliders = Physics.OverlapSphere(tile.transform.position, 0.6f, pieceLayer);
         foreach (Collider collider in colliders)
         {
             if (collider.CompareTag("Piece"))
@@ -387,31 +421,31 @@ public class ChessGameManager : MonoBehaviour
         {
             case "Tower":
                 promotionTo = Instantiate(BCG.piecePrefabs[3]);
-                promotionTo.transform.position = new Vector3(pawn.transform.position.x, pawn.transform.position.y, pawn.transform.position.z);
+                promotionTo.transform.position = new Vector3(pawn.transform.position.x, pawn.transform.position.y + 0.05f, pawn.transform.position.z);
                 break;
             case "Bishop":
                 promotionTo = Instantiate(BCG.piecePrefabs[5]);
-                promotionTo.transform.position = new Vector3(pawn.transform.position.x, pawn.transform.position.y, pawn.transform.position.z);
+                promotionTo.transform.position = new Vector3(pawn.transform.position.x, pawn.transform.position.y + 0.05f, pawn.transform.position.z);
                 break;
             case "Queen":
                 promotionTo = Instantiate(BCG.piecePrefabs[6]);
-                promotionTo.transform.position = new Vector3(pawn.transform.position.x, pawn.transform.position.y, pawn.transform.position.z);
+                promotionTo.transform.position = new Vector3(pawn.transform.position.x, pawn.transform.position.y + 0.17f, pawn.transform.position.z);
                 break;
             case "Knight":
                 promotionTo = Instantiate(BCG.piecePrefabs[4]);
-                promotionTo.transform.position = new Vector3(pawn.transform.position.x, pawn.transform.position.y, pawn.transform.position.z);
+                promotionTo.transform.position = new Vector3(pawn.transform.position.x, pawn.transform.position.y + 0.05f, pawn.transform.position.z);
                 break;
             case "SoulEater":
                 promotionTo = Instantiate(BCG.piecePrefabs[2]);
-                promotionTo.transform.position = new Vector3(pawn.transform.position.x, pawn.transform.position.y, pawn.transform.position.z);
+                promotionTo.transform.position = new Vector3(pawn.transform.position.x, pawn.transform.position.y + 0.1f, pawn.transform.position.z);
                 break;
             case "Assassin":
                 promotionTo = Instantiate(BCG.piecePrefabs[1]);
-                promotionTo.transform.position = new Vector3(pawn.transform.position.x, pawn.transform.position.y, pawn.transform.position.z);
+                promotionTo.transform.position = new Vector3(pawn.transform.position.x - 0.17f, pawn.transform.position.y + 0.2f, pawn.transform.position.z);
                 break;
             case "Priest":
                 promotionTo = Instantiate(BCG.piecePrefabs[9]);
-                promotionTo.transform.position = new Vector3(pawn.transform.position.x, pawn.transform.position.y, pawn.transform.position.z);
+                promotionTo.transform.position = new Vector3(pawn.transform.position.x, pawn.transform.position.y + 0.05f, pawn.transform.position.z + 0.5f);
                 break;
             case "Chaos":
                 promotionTo = Instantiate(BCG.piecePrefabs[8]);
