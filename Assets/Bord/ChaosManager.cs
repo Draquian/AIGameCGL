@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class ChaosManager : MonoBehaviour
 {
@@ -113,9 +114,23 @@ public class ChaosManager : MonoBehaviour
 
         button.GetComponent<Button>().onClick.AddListener(delegate { SelectedCard(button); });
 
-        float posY = GetComponent<MeshRenderer>().material.color == Color.black ? -100.0f : 100.0f;
+        GameObject textDescription = GameObject.Find("DescriptionPanel");
 
-        float posX = -300 + (150 * deck.Count);
+        EventTrigger trigger = button.GetComponent<EventTrigger>();
+
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.PointerEnter;
+        entry.callback.AddListener(delegate { textDescription.GetComponent<DescriptionPosition>().ActiveObject(button.name); });
+        trigger.triggers.Add(entry);
+
+        EventTrigger.Entry exit = new EventTrigger.Entry();
+        exit.eventID = EventTriggerType.PointerExit;
+        exit.callback.AddListener(delegate { textDescription.GetComponent<DescriptionPosition>().DesactiveObject(); });
+        trigger.triggers.Add(exit);
+
+        float posY = GetComponent<MeshRenderer>().material.color == Color.black ? -75.0f : 75.0f;
+
+        float posX = -260 + (125 * deck.Count);
 
         button.transform.localPosition = new Vector3(posX, posY, 0.0f);
         deck.Add(button);
@@ -124,6 +139,11 @@ public class ChaosManager : MonoBehaviour
             SetInteraction(true);
         else
             SetInteraction(false);
+    }
+
+    void TEST()
+    {
+        Debug.Log("TEST");
     }
 
     public void SetInteraction(bool whiteTurn)
@@ -216,7 +236,7 @@ public class ChaosManager : MonoBehaviour
 
         foreach (GameObject cardLeft in deck)
         {
-            cardLeft.transform.localPosition = new Vector3(-300 + (150 * i), cardLeft.transform.localPosition.y, 0);
+            cardLeft.transform.localPosition = new Vector3(-260 + (125 * i), cardLeft.transform.localPosition.y, 0);
             i++;
         }
     }

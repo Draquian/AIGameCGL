@@ -23,6 +23,11 @@ public class TornadoManager : MonoBehaviour
             while (IsPieceAtTile(newPos))
             {
                 newPos = new Vector3(Random.Range(0, 9), 0.5f, Random.Range(0, 9));
+                if (collision.gameObject.name == "Priest") { newPos.y = 0.95f; }
+                else if (collision.gameObject.name == "Queen") { newPos.y = 1.07f; }
+                else if (collision.gameObject.name == "Chaos") { newPos.y = 0.9f; }
+                else if (collision.gameObject.name == "King") { newPos.y = 1f; }
+                else { newPos.y = 0.95f; }
             }
 
             collision.gameObject.transform.position = newPos;

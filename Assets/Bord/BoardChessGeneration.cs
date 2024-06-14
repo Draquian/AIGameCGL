@@ -165,7 +165,7 @@ public class BoardChessGeneration : MonoBehaviour
         if (piecePrefab.name == "Priest") { piecePosition = new Vector3(col * tileSize, 0.95f, (row * tileSize) + 0.5f) + offset; }
         else if (piecePrefab.name == "Queen") { piecePosition = new Vector3(col * tileSize, 1.07f, row * tileSize) + offset; }
         else if (piecePrefab.name == "Chaos") { piecePosition = new Vector3(col * tileSize, 0.9f, row * tileSize) + offset; }
-        else if (piecePrefab.name == "King") { piecePosition = new Vector3((col * tileSize) + 0.35f, 1f, row * tileSize) + offset; }
+        else if (piecePrefab.name == "King") { piecePosition = new Vector3((col * tileSize), 1f, row * tileSize) + offset; }
         else { piecePosition = new Vector3(col * tileSize, 0.95f, row * tileSize) + offset; }
         piece.transform.position = piecePosition;
 

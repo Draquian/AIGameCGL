@@ -17,6 +17,7 @@ public class LLMComunication : MonoBehaviour
 
         llm = GetComponent<LLM>();
         llm.prompt = prompt;
+
     }
 
     // Update is called once per frame
