@@ -19,7 +19,14 @@ public class DescriptionPosition : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 screenPosition = Input.mousePosition + new Vector3(-125, -100, 0);
+        Vector3 offset;
+
+        if(Input.mousePosition.x > 220) { offset = new Vector3(-125, -100, 0); }
+        else { offset = new Vector3(125, -100, 0); }
+
+        Debug.Log(Input.mousePosition);
+
+        Vector3 screenPosition = Input.mousePosition + offset;
 
         screenPosition.z = basisObject.position.z;
 
