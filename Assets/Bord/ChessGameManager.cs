@@ -6,7 +6,6 @@ using TMPro;
 
 /*
  TODO:
-        -Make the art
         -Add AI to cast the game as an Epic War
 
 Maybe Todo:
@@ -254,6 +253,10 @@ public class ChessGameManager : MonoBehaviour
                     else EndGame("black");
 
                     pieceAtTile.SetActive(false); //dont destroy, they can revive
+                }
+                else if(selectedPiece.name == "Assassin(Clone)")
+                {
+                    Destroy(pieceAtTile);
                 }
                 else if(selectedPiece.name != "Priest(Clone)")
                 {
