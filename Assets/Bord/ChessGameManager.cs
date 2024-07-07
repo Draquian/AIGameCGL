@@ -4,15 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-/*
- TODO:
-        -Add AI to cast the game as an Epic War
-
-Maybe Todo:
-        - Enroque
-        - Anpasant
- */
-
 public class ChessGameManager : MonoBehaviour
 {
     public LayerMask pieceLayer;
@@ -20,6 +11,7 @@ public class ChessGameManager : MonoBehaviour
     public LayerMask trapLayer;
 
     public GameObject selectedPiece;
+    GameObject lastPiece;
     public bool isWhiteTurn = true; // White starts first
     public bool endTurn = false;
 
@@ -47,6 +39,14 @@ public class ChessGameManager : MonoBehaviour
     public GameObject blackCamera;
     public GameObject light;
 
+    LLMComunication llM;
+    string prompt;
+
+    private void Start()
+    {
+        llM = GameObject.Find("LLM").GetComponent<LLMComunication>();
+    }
+
     void Update()
     {
         if (!resetGame && !canPromote && Input.GetMouseButtonDown(0))
@@ -65,6 +65,7 @@ public class ChessGameManager : MonoBehaviour
                 if (CanSelectPiece(hitPiece))
                 {
                     SelectPiece(hitPiece);
+                    lastPiece = hitPiece;
                 }
             }
         }
@@ -82,22 +83,14 @@ public class ChessGameManager : MonoBehaviour
                 Vector3 temporalPos = hit.transform.position;
                 temporalPos.y = 3;
                 light.transform.position = temporalPos;
+
+                if(isWhiteTurn)
+                    prompt += "the " + lastPiece + "of the White kingdom are moving to the new position: (" + hit.transform.position.x + ", " + hit.transform.position.z + ").";
+                else
+                    prompt += "the " + lastPiece + "of the Black kingdom are moving to the new position: (" + hit.transform.position.x + ", " + hit.transform.position.z + ").";
             }
         }
-        
-        if(Input.GetKeyDown(KeyCode.D))
-        {
-            Destroy(selectedPiece.GetComponent<PriestManager>());
-        }
-        if(Input.GetKeyUp(KeyCode.E))
-        {
-            EndGame("white");
-        }
-        if(Input.GetKeyUp(KeyCode.W))
-        {
-            EndGame("black");
-        }
-        
+                
         if(Input.GetKeyDown(KeyCode.R))
         {
             BoardChessGeneration BCG = FindObjectOfType<BoardChessGeneration>();
@@ -257,6 +250,8 @@ public class ChessGameManager : MonoBehaviour
                 else if(selectedPiece.name == "Assassin(Clone)")
                 {
                     Destroy(pieceAtTile);
+
+                    prompt += "the " + selectedPiece.name + "destroy the enamy piece " + pieceAtTile + ". ";
                 }
                 else if(selectedPiece.name != "Priest(Clone)")
                 {
@@ -269,7 +264,13 @@ public class ChessGameManager : MonoBehaviour
 
                     pieceAtTile.SetActive(false); //dont destroy, they can revive
 
-                    if (pieceAtTile.GetComponent<Revenge>() != null) pieceAtTile.GetComponent<Revenge>().TakeRevenge(selectedPiece);
+                    prompt += "the " + selectedPiece.name + "of the " + selectedPiece.GetComponent<MeshRenderer>().material.color + " capture the " + pieceAtTile.name + "of the enemy team. ";
+
+                    if (pieceAtTile.GetComponent<Revenge>() != null)
+                    {
+                        pieceAtTile.GetComponent<Revenge>().TakeRevenge(selectedPiece);
+                        prompt += "but the " + pieceAtPiece.name + " has take revenge against the " + selectedPiece.name + ". ";
+                    }
                 }
             }
             else
@@ -342,6 +343,8 @@ public class ChessGameManager : MonoBehaviour
         normalText3.color = txtC;
         loseSide.color = txtC;
         winSide.color = txtC;
+
+        llM.GetPrompt("The " + winner + " Kingdom kill the enemy King and won that epic war.");
     }
 
     public GameObject GetPieceAtTile(GameObject tile)
@@ -462,6 +465,8 @@ public class ChessGameManager : MonoBehaviour
         {
             promotionTo.GetComponent<MeshRenderer>().material.color = pawn.GetComponent<MeshRenderer>().material.color;
         }
+
+        llM.GetPrompt("The Pawn of the hasa reach the enemy field and was promoting to a " + newPiece + ".");
 
         Destroy(pawn);
         panelToPromote.SetActive(false);
@@ -768,6 +773,11 @@ public class ChessGameManager : MonoBehaviour
         }
 
         endTurn = true;
+
+        prompt += "And now is the turn of the other Kingdom.";
+
+        llM.GetPrompt(prompt);
+
         StartCoroutine(EndTurn());
     }
 
@@ -833,6 +843,11 @@ public class ChessGameManager : MonoBehaviour
         isWhiteTurn = !isWhiteTurn;
         whiteCamera.SetActive(isWhiteTurn);
         blackCamera.SetActive(!isWhiteTurn);
+
+        GameObject canvas = GameObject.Find("Canvas");
+
+        if (isWhiteTurn) canvas.GetComponent<Canvas>().worldCamera = whiteCamera.GetComponent<Camera>();
+        else canvas.GetComponent<Canvas>().worldCamera = blackCamera.GetComponent<Camera>();
 
         foreach (PriestManager.CapturedPieceInfo capturedPieceInfo in capturedPiecesWhite)
         {

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using LLMUnity;
+using TMPro;
 
 public class LLMComunication : MonoBehaviour
 {
@@ -10,38 +11,40 @@ public class LLMComunication : MonoBehaviour
 
     string replay;
 
+    public string negativeP;
+    public string contextP;
+    public string startingP;
+
     // Start is called before the first frame update
     void Start()
     {
-        prompt = "make some joke in spanish";
-
         llm = GetComponent<LLM>();
-        llm.prompt = prompt;
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L)) SendMSGToLLM();
         if (Input.GetKeyDown(KeyCode.Q)) llm.CancelRequests();
     }
 
     void SendMSGToLLM()
     {
-        Debug.Log("Sending");
-        string message = "Hello bot!";
-        _ = llm.Chat(message + prompt, GeneratedText, Replay, false);
+        _ = llm.Chat(contextP + negativeP + startingP + prompt, GeneratedText, Replay, true);
     }
 
     void GeneratedText(string msg)
     {
         replay = msg;
-        Debug.Log("Generating" + msg);
     }
 
     void Replay()
     {
-        Debug.Log(replay);
+        GameObject.Find("EpicWar").GetComponent<TextMeshProUGUI>().text = replay;
+    }
+
+    public void GetPrompt(string prompt)
+    {
+        this.prompt = prompt;
+        SendMSGToLLM();
     }
 }

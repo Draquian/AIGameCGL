@@ -83,6 +83,8 @@ public class BoardChessGeneration : MonoBehaviour
                 }
             }
         }
+
+        GameObject.Find("LLM").GetComponent<LLMComunication>().GetPrompt("Now the 2 kingdoms are in the board facing one to each other, the battle are ready to start, the black kingdom are waiting for the white kingdom to move");
     }
 
     void GenerateTiles(int row, int col, GameObject father)

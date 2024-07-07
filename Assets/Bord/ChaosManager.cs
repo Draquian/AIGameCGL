@@ -43,7 +43,6 @@ public class ChaosManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G)) GenerateAbilityCard();
         if (tpCard) TPCard();
         if (spCard) SwapPos();
         if (frCard) Freeze();
@@ -141,11 +140,6 @@ public class ChaosManager : MonoBehaviour
             SetInteraction(false);
     }
 
-    void TEST()
-    {
-        Debug.Log("TEST");
-    }
-
     public void SetInteraction(bool whiteTurn)
     {
         if (whiteTurn)
@@ -185,6 +179,11 @@ public class ChaosManager : MonoBehaviour
     {
         string[] splitArray = cardGO.name.Split(char.Parse("("));
         string card = splitArray[0];
+
+        if(GetComponent<MeshRenderer>().material.color == Color.white)
+            GameObject.Find("LLM").GetComponent<LLMComunication>().GetPrompt("the Chaos piece of the white kingdom use the magical ability " + card);
+        else
+            GameObject.Find("LLM").GetComponent<LLMComunication>().GetPrompt("the Chaos piece of the black kingdom use the magical ability " + card);
 
         switch (card)
         {
@@ -682,15 +681,11 @@ public class ChaosManager : MonoBehaviour
     {
         ChessGameManager CGM = FindObjectOfType<ChessGameManager>();
 
-        Debug.Log(pos);
-
         Collider[] colliders = Physics.OverlapSphere(pos, 0.75f, CGM.trapLayer);
         foreach (Collider collider in colliders)
         {
-            Debug.Log("Casi Gotcha");
             if (collider.gameObject.GetComponent<Trap>() != null)
             {
-                Debug.Log("Gotcha");
                 return collider.gameObject;
             }
         }
