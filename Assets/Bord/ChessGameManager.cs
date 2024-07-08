@@ -90,8 +90,18 @@ public class ChessGameManager : MonoBehaviour
                     prompt += "the " + lastPiece + "of the Black kingdom are moving to the new position: (" + hit.transform.position.x + ", " + hit.transform.position.z + ").";
             }
         }
-                
-        if(Input.GetKeyDown(KeyCode.R))
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            Application.OpenURL(System.Environment.CurrentDirectory + "/Documentation_CC.pdf");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
         {
             BoardChessGeneration BCG = FindObjectOfType<BoardChessGeneration>();
             BCG.ResetGame();
